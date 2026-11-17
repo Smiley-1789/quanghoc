@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quang Học Lab — Phòng thí nghiệm ánh sáng</title>
+<style>
+:root{--bg:#080d18;--panel:#101a2b;--panel2:#142139;--line:#243653;--text:#eaf2ff;--muted:#91a4c2;--cyan:#55d9ff;--blue:#6c8cff;--gold:#ffd166;--pink:#ff7ab6;--green:#70e1b2}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#1a3152 0%,var(--bg) 55%);color:var(--text);font:15px/1.5 Inter,system-ui,Segoe UI,Arial,sans-serif}
+header{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:#0b1321dd;position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:18px;letter-spacing:.3px}.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#4de0ff,#637bff);display:grid;place-items:center;color:#071321;font-size:21px;box-shadow:0 0 25px #4de0ff55}
+.header-note{color:var(--muted);font-size:13px}.layout{max-width:1500px;margin:auto;padding:24px;display:grid;grid-template-columns:230px minmax(350px,1fr) 300px;gap:18px}
+.panel{background:linear-gradient(160deg,#132039,#0e1728);border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 35px #0003}.sidebar{padding:18px;height:max-content}.eyebrow{font-size:11px;color:var(--cyan);font-weight:800;letter-spacing:1.4px;text-transform:uppercase;margin:2px 0 13px}
+.nav{width:100%;border:1px solid transparent;background:transparent;color:var(--muted);text-align:left;padding:12px;border-radius:12px;display:flex;gap:10px;align-items:center;cursor:pointer;margin:4px 0;font:inherit;transition:.2s}.nav:hover{background:#1a2a45;color:var(--text)}.nav.active{background:linear-gradient(100deg,#1a4260,#202d55);border-color:#3d8cbd;color:#fff;box-shadow:inset 3px 0 var(--cyan)}.nav .ico{font-size:19px;width:25px;text-align:center}.side-tip{margin-top:22px;padding:13px;border-radius:13px;background:#0b1728;border:1px solid #20324d;color:var(--muted);font-size:12px}
+.main{min-width:0}.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:2px 2px 15px}.heading h1{font-size:25px;margin:0 0 4px}.heading p{margin:0;color:var(--muted);font-size:13px}.pill{padding:6px 10px;border:1px solid #28516a;border-radius:30px;color:var(--cyan);font-size:11px;white-space:nowrap;background:#102638}
+.stage{padding:12px;overflow:hidden}.stage-top{display:flex;justify-content:space-between;align-items:center;padding:4px 5px 12px;color:var(--muted);font-size:12px}.live{color:var(--green);font-weight:700}.canvas-wrap{position:relative;background:#08111f;border:1px solid #263b5a;border-radius:13px;overflow:hidden}.canvas-wrap:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,#6bdcff08,transparent 45%,#748bff08)}canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;touch-action:pan-y}.canvas-legend{display:flex;gap:16px;flex-wrap:wrap;padding:12px 5px 3px;color:var(--muted);font-size:11px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.info-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.info{padding:14px 15px}.info h3{font-size:13px;margin:0 0 6px;color:#cfe5ff}.info p{font-size:12px;color:var(--muted);margin:0}.formula{color:var(--gold);font-family:ui-monospace,monospace;font-size:14px;margin-top:6px}
+.controls{padding:18px;height:max-content}.controls h2{font-size:16px;margin:0 0 3px}.sub{font-size:12px;color:var(--muted);margin:0 0 18px}.control{padding:12px 0;border-top:1px solid #22324b}.control:first-of-type{border-top:0}.control-head{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-size:12px}.control-head label{color:#c7d6eb}.value{color:var(--cyan);font-weight:700;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--cyan);cursor:pointer}select{width:100%;background:#0a1424;border:1px solid #304564;color:var(--text);border-radius:9px;padding:9px;font:inherit;font-size:12px}
+.actions{display:flex;gap:8px;margin-top:15px}.btn{border:1px solid #355172;background:#172945;color:var(--text);border-radius:10px;padding:9px 12px;cursor:pointer;font:inherit;font-size:12px}.btn.primary{background:linear-gradient(110deg,#147da1,#485cc1);border:0;font-weight:700}.btn:hover{filter:brightness(1.2)}.readout{margin-top:14px;padding:13px;border-radius:12px;background:#0a1728;border:1px solid #203b56}.readout .label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}.readout strong{display:block;font-size:20px;color:var(--green);margin-top:3px}.readout small{color:var(--muted);font-size:11px}
+footer{text-align:center;color:#71839f;font-size:11px;padding:0 20px 25px}
+@media(max-width:1050px){.layout{grid-template-columns:190px minmax(300px,1fr)}.controls{grid-column:2;display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.controls h2,.controls .sub,.actions,.readout{grid-column:1/-1}}
+@media(max-width:700px){header{padding:0 15px;height:65px}.header-note{display:none}.layout{padding:14px;display:flex;flex-direction:column}.sidebar{padding:12px}.sidebar .eyebrow{margin-left:4px}.navlist{display:grid;grid-template-columns:repeat(2,1fr);gap:3px}.nav{margin:0;padding:9px;font-size:12px}.side-tip{display:none}.heading h1{font-size:21px}.controls{display:block}.info-row{grid-template-columns:1fr}.pill{display:none}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">✦</div><div>QUANG HỌC <span style="color:var(--cyan)">LAB</span></div></div><div class="header-note">PHÒNG THÍ NGHIỆM ÁNH SÁNG TƯƠNG TÁC · VẬT LÝ 9</div></header>
+<div class="layout">
+<aside class="panel sidebar">
+ <div class="eyebrow">Danh mục thí nghiệm</div>
+ <div class="navlist">
+ <button class="nav active" data-mode="reflection"><span class="ico">↗</span>Phản xạ</button>
+ <button class="nav" data-mode="refraction"><span class="ico">⌁</span>Khúc xạ</button>
+ <button class="nav" data-mode="dispersion"><span class="ico">🌈</span>Tán sắc</button>
+ <button class="nav" data-mode="lens"><span class="ico">◉</span>Thấu kính</button>
+ </div>
+ <div class="side-tip"><b style="color:#d9eaff">Cách sử dụng</b><br>Chọn thí nghiệm, kéo các thanh trượt ở bảng điều khiển và quan sát tia sáng thay đổi. Nhấn <b>Đặt lại</b> để khôi phục thông số ban đầu.</div>
+</aside>
+<main class="main">
+ <div class="heading"><div><h1 id="title">Phản xạ ánh sáng</h1><p id="description">Quan sát tia sáng phản xạ trên gương phẳng.</p></div><span class="pill">● MÔ PHỎNG TRỰC TIẾP</span></div>
+ <section class="panel stage">
+  <div class="stage-top"><span>KHÔNG GIAN THÍ NGHIỆM</span><span class="live">● ĐANG HOẠT ĐỘNG</span></div>
+  <div class="canvas-wrap"><canvas id="sim" width="960" height="540" aria-label="Hình mô phỏng hiện tượng ánh sáng"></canvas></div>
+  <div class="canvas-legend" id="legend"><span><i class="dot" style="background:#ffd166"></i>Tia tới</span><span><i class="dot" style="background:#55d9ff"></i>Tia phản xạ</span><span><i class="dot" style="background:#a8bad3"></i>Pháp tuyến</span></div>
+ </section>
+ <div class="info-row">
+  <section class="panel info"><h3>📘 Kiến thức vật lý</h3><p id="explain">Trong phản xạ ánh sáng, tia phản xạ nằm trong mặt phẳng tới và góc phản xạ bằng góc tới.</p></section>
+  <section class="panel info"><h3>∑ Công thức / quy tắc</h3><div class="formula" id="formula">i = i′</div><p id="formulaNote">Góc tới bằng góc phản xạ (đo với pháp tuyến).</p></section>
+ </div>
+</main>
+<aside class="panel controls">
+ <h2>Điều khiển thí nghiệm</h2><p class="sub">Thay đổi thông số để quan sát kết quả.</p>
+ <div id="controlArea"></div>
+ <div class="actions"><button class="btn primary" id="reset">↺ Đặt lại</button><button class="btn" id="pause">Ⅱ Tạm dừng</button></div>
+ <div class="readout"><div class="label">KẾT QUẢ QUAN SÁT</div><strong id="result">i = i′ = 35°</strong><small id="resultNote">Định luật phản xạ ánh sáng được thỏa mãn.</small></div>
+ <section class="panel info" style="margin-top:14px">
+  <h3>🔎 Chú giải ký hiệu</h3>
+  <div id="symbols" style="display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px">
+   <div><b style="color:var(--cyan)">i</b> — Góc tới</div>
+   <div><b style="color:var(--cyan)">i′</b> — Góc phản xạ</div>
+   <div><b style="color:var(--cyan)">N</b> — Pháp tuyến tại điểm tới</div>
+  </div>
+ </section>
+</aside>
+</div>
+<footer>Mô phỏng mang tính học tập · Các hình vẽ minh họa theo mô hình quang hình học lý tưởng</footer>
+<script>
+const canvas=document.getElementById('sim'),ctx=canvas.getContext('2d');
+const $=id=>document.getElementById(id);
+const defaults={
+ reflection:{angle:35},
+ refraction:{angle:45,n1:1.00,n2:1.33},
+ dispersion:{spread:1.0},
+ lens:{kind:'convex',f:120,u:210}
+};
+let mode='reflection',state=structuredClone(defaults),paused=false,anim=0;
+const meta={
+ reflection:{title:'Phản xạ ánh sáng',desc:'Quan sát tia sáng phản xạ trên gương phẳng.',explain:'Tia phản xạ nằm trong mặt phẳng tới. Góc phản xạ luôn bằng góc tới; cả hai góc đều được đo so với pháp tuyến tại điểm tới.',formula:'i = i′',note:'Góc tới bằng góc phản xạ.'},
+ refraction:{title:'Khúc xạ ánh sáng',desc:'Theo dõi tia sáng đổi hướng khi truyền qua mặt phân cách.',explain:'Khi truyền xiên góc qua mặt phân cách giữa hai môi trường trong suốt, tia sáng bị đổi hướng. Đi vào môi trường có chiết suất lớn hơn thì tia lệch gần pháp tuyến hơn.',formula:'n₁ sin i = n₂ sin r',note:'Định luật khúc xạ ánh sáng (hai môi trường trong suốt).'},
+ dispersion:{title:'Tán sắc ánh sáng',desc:'Phân tích ánh sáng trắng thành các thành phần màu.',explain:'Lăng kính làm ánh sáng trắng bị khúc xạ và phân tách thành nhiều màu. Mỗi màu có chiết suất khác nhau; ánh sáng tím thường lệch nhiều hơn ánh sáng đỏ.',formula:'n = c / v',note:'Chiết suất phụ thuộc vào màu sắc (bước sóng).'},
+ lens:{title:'Thấu kính hội tụ & phân kỳ',desc:'Thay đổi tiêu cự và vị trí vật để quan sát ảnh.',explain:'Thấu kính hội tụ có thể tạo ảnh thật hoặc ảnh ảo tùy vị trí vật. Thấu kính phân kỳ với vật thật tạo ảnh ảo, cùng chiều và nhỏ hơn vật.',formula:'1/f = 1/d + 1/d′',note:'Quy ước: f > 0 với hội tụ, f < 0 với phân kỳ.'}
+};
+function control(label,key,min,max,step,unit){return `<div class="control"><div class="control-head"><label>${label}</label><span class="value" id="v-${key}"></span></div><input type="range" min="${min}" max="${max}" step="${step}" data-key="${key}"></div>`}
+function selectControl(label,key,options){return `<div class="control"><div class="control-head"><label>${label}</label></div><select data-key="${key}">${options.map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('')}</select></div>`}
+function buildControls(){
+ let h='';
+ if(mode==='reflection')h=control('Góc tới','angle',5,90,1,'°');
+ if(mode==='refraction')h=control('Góc tới','angle',0,90,1,'°')+control('Chiết suất môi trường 1 (n₁)','n1',1,2,0.01,'')+control('Chiết suất môi trường 2 (n₂)','n2',1,2.4,0.01,'');
+ if(mode==='dispersion')h=control('Độ xòe quang phổ','spread',0.4,1.8,0.1,'×');
+ if(mode==='lens')h=selectControl('Loại thấu kính','kind',[['convex','Hội tụ'],['concave','Phân kỳ']])+control('Tiêu cự','f',60,200,5,' px')+control('Khoảng cách vật (d)','u',90,390,5,' px');
+ $('controlArea').innerHTML=h;
+ $('controlArea').querySelectorAll('input,select').forEach(el=>{
+  const key=el.dataset.key;el.value=state[mode][key];
+  const update=()=>{state[mode][key]=el.type==='range'?Number(el.value):el.value;updateLabels();draw()};
+  el.addEventListener('input',update);el.addEventListener('change',update);
+ });
+ updateLabels();
+}
+function updateLabels(){
+ $('controlArea').querySelectorAll('input').forEach(el=>{
+  let k=el.dataset.key,v=state[mode][k],unit=(k==='angle'?'°':k==='spread'?'×':k==='f'||k==='u'?' px':'');
+  const node=$('v-'+k);if(node)node.textContent=Number(v).toFixed(k==='n1'||k==='n2'?2:0)+unit;
+ });
+}
+function line(x1,y1,x2,y2,color,width=3,dash=[]){ctx.beginPath();ctx.setLineDash(dash);ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke();ctx.setLineDash([])}
+function arrow(x1,y1,x2,y2,color,width=4){line(x1,y1,x2,y2,color,width);let a=Math.atan2(y2-y1,x2-x1),l=14;ctx.beginPath();ctx.moveTo(x2,y2);ctx.lineTo(x2-l*Math.cos(a-.45),y2-l*Math.sin(a-.45));ctx.lineTo(x2-l*Math.cos(a+.45),y2-l*Math.sin(a+.45));ctx.closePath();ctx.fillStyle=color;ctx.fill()}
+function label(t,x,y,color='#dceaff',size=16){ctx.fillStyle=color;ctx.font=`${size}px system-ui`;ctx.fillText(t,x,y)}
+function base(){ctx.clearRect(0,0,960,540);ctx.fillStyle='#081321';ctx.fillRect(0,0,960,540);ctx.strokeStyle='#162842';ctx.lineWidth=1;for(let x=0;x<960;x+=40){line(x,0,x,540,'#13243a',1)}for(let y=0;y<540;y+=40){line(0,y,960,y,'#13243a',1)}}
+function drawReflection(){
+ const a=state.reflection.angle*Math.PI/180,cx=480,cy=330;
+ line(100,cy,860,cy,'#b8c9df',5);line(cx,70,cx,490,'#8197b5',1.5,[7,7]);
+ arrow(cx-260*Math.sin(a),cy-260*Math.cos(a),cx,cy,'#ffd166');
+ arrow(cx,cy,cx+260*Math.sin(a),cy-260*Math.cos(a),'#55d9ff');
+ ctx.strokeStyle='#ffd166';ctx.lineWidth=2;ctx.beginPath();ctx.arc(cx,cy,65,-Math.PI/2-a,-Math.PI/2);ctx.stroke();
+ ctx.strokeStyle='#55d9ff';ctx.beginPath();ctx.arc(cx,cy,65,-Math.PI/2,-Math.PI/2+a);ctx.stroke();
+ label('GƯƠNG PHẲNG',690,365,'#c5d6ed',14);label('Pháp tuyến',493,90,'#a8bad3',13);label('Tia tới',170,90,'#ffd166');label('Tia phản xạ',665,90,'#55d9ff');
+ label(`i = ${state.reflection.angle}°`,cx-110,cy-83,'#ffd166',14);label(`i′ = ${state.reflection.angle}°`,cx+35,cy-83,'#55d9ff',14);
+ $('result').textContent=`i = i′ = ${state.reflection.angle}°`;$('resultNote').textContent='Góc phản xạ bằng góc tới.';
+}
+function drawRefraction(){
+ const s=state.refraction,a=s.angle*Math.PI/180,ratio=s.n1/s.n2,sinr=ratio*Math.sin(a),cx=480,cy=260;
+ line(60,cy,900,cy,'#b8c9df',2);ctx.fillStyle='#102e49';ctx.fillRect(60,cy,840,230);ctx.fillStyle='#1b4660';ctx.globalAlpha=.22;ctx.fillRect(60,cy,840,230);ctx.globalAlpha=1;
+ line(cx,45,cx,495,'#8298b5',1.5,[7,7]);
+ arrow(cx-250*Math.sin(a),cy-250*Math.cos(a),cx,cy,'#ffd166');
+ if(Math.abs(sinr)<=1){let r=Math.asin(sinr);arrow(cx,cy,cx+250*Math.sin(r),cy+250*Math.cos(r),'#55d9ff');label(`r = ${(r*180/Math.PI).toFixed(1)}°`,cx+30,cy+100,'#55d9ff',15);$('result').textContent=`Góc khúc xạ r = ${(r*180/Math.PI).toFixed(1)}°`;$('resultNote').textContent=`n₁ sin i = n₂ sin r · n₁=${s.n1.toFixed(2)}, n₂=${s.n2.toFixed(2)}`;}
+ else{$('result').textContent='Phản xạ toàn phần';$('resultNote').textContent='Không có tia khúc xạ truyền sang môi trường 2 ở góc này.';arrow(cx,cy,cx+230*Math.sin(a),cy-230*Math.cos(a),'#55d9ff');}
+ label(`Môi trường 1 · n₁=${s.n1.toFixed(2)}`,80,75,'#dceaff',15);label(`Môi trường 2 · n₂=${s.n2.toFixed(2)}`,80,cy+45,'#dceaff',15);label('Mặt phân cách',700,cy-12,'#a8bad3',13);label('Pháp tuyến',495,55,'#a8bad3',13);label(`i = ${s.angle}°`,cx-120,cy-80,'#ffd166',14);
+}
+function drawDispersion(){
+ const spread=state.dispersion.spread,cx=300,cy=260;
+ // white beam entering a triangular prism
+ arrow(65,cy,365,cy,'#fff3cb',5);
+ ctx.beginPath();ctx.moveTo(365,145);ctx.lineTo(535,390);ctx.lineTo(535,145);ctx.closePath();ctx.fillStyle='#6bdcff20';ctx.fill();ctx.strokeStyle='#7edcff';ctx.lineWidth=3;ctx.stroke();
+ label('ÁNH SÁNG TRẮNG',75,225,'#fff3cb',14);label('LĂNG KÍNH',405,420,'#a9d9ed',13);
+ const colors=['#ff5d5d','#ff9d45','#ffe16b','#62e28a','#57cfff','#6687ff','#bd83ff'];
+ const names=['Đỏ','Cam','Vàng','Lục','Lam','Chàm','Tím'];
+ colors.forEach((c,i)=>{let t=i/6-.5,y=cy+t*160*spread;let endX=865;let endY=cy+t*300*spread;arrow(535,cy,endX,endY,c,3);label(names[i],endX-4,endY-10,c,13)});
+ $('result').textContent='7 màu quang phổ';$('resultNote').textContent=`Độ xòe đang đặt ở mức ${spread.toFixed(1)}×. Tím lệch nhiều hơn đỏ.`;
+}
+function drawLens(){
+ const s=state.lens,conv=s.kind==='convex',f=s.f*(conv?1:-1),u=s.u,cx=535,cy=275,scale=1;
+ line(55,cy,910,cy,'#9eb2ce',1.5);
+ // lens body
+ ctx.beginPath();if(conv){ctx.moveTo(cx,100);ctx.bezierCurveTo(cx-55,180,cx-55,360,cx,450);ctx.bezierCurveTo(cx+55,360,cx+55,180,cx,100)}else{ctx.moveTo(cx-10,100);ctx.bezierCurveTo(cx+22,180,cx+22,360,cx-10,450);ctx.lineTo(cx+10,450);ctx.bezierCurveTo(cx-22,360,cx-22,180,cx+10,100)}
+ ctx.closePath();ctx.fillStyle='#53cfff20';ctx.fill();ctx.strokeStyle='#62d8ff';ctx.lineWidth=3;ctx.stroke();
+ const F=Math.abs(f),objX=cx-u, objH=85;
+ line(cx-F,cy-12,cx-F,cy+12,'#ffd166',2);line(cx+F,cy-12,cx+F,cy+12,'#ffd166',2);label('F',cx-F-5,cy+32,'#ffd166',14);label("F′",cx+F-5,cy+32,'#ffd166',14);
+ arrow(objX,cy,objX,cy-objH,'#ffd166',4);label('Vật',objX-18,cy-objH-15,'#ffd166',14);
+ let v= f*u/(u-f), m=-v/u, imgH=objH*m, imgX=cx+v;
+ // principal rays
+ let topY=cy-objH;
+ line(objX,topY,cx,topY,'#ffd166',2);line(cx,topY,imgX,cy-imgH,'#ffd166',2);
+ line(objX,topY,cx+(conv?F:-F),cy,'#ff9c70',2);line(cx+(conv?F:-F),cy,imgX,cy-imgH,'#ff9c70',2);
+ const real=conv&&u>F;
+ if(!real){ctx.setLineDash([7,6]);line(cx,topY,imgX,cy-imgH,'#9cb0ca',1.5);line(cx+(conv?F:-F),cy,imgX,cy-imgH,'#9cb0ca',1.5);ctx.setLineDash([])}
+ if(Number.isFinite(imgX)&&Math.abs(v)<700&&Math.abs(imgH)<400)arrow(imgX,cy,imgX,cy-imgH,real?'#70e1b2':'#ff7ab6',4);
+ label(real?'Ảnh thật':'Ảnh ảo',Math.max(65,Math.min(820,imgX+10)),Math.max(75,Math.min(480,cy-imgH-15)),real?'#70e1b2':'#ff7ab6',14);
+ label(conv?'THẤU KÍNH HỘI TỤ':'THẤU KÍNH PHÂN KỲ',cx-110,65,'#bceaff',14);
+ $('result').textContent=Number.isFinite(v)?`d′ = ${Math.abs(v).toFixed(1)} px`:'Ảnh ở vô cực';
+ $('resultNote').textContent=real?`Ảnh thật, ngược chiều · độ phóng đại |k|=${Math.abs(m).toFixed(2)}`:`Ảnh ảo, cùng chiều · độ phóng đại |k|=${Math.abs(m).toFixed(2)}`;
+}
+function draw(){base();if(mode==='reflection')drawReflection();if(mode==='refraction')drawRefraction();if(mode==='dispersion')drawDispersion();if(mode==='lens')drawLens()}
+const symbolGlossary={
+ reflection:[['i','Góc tới — góc giữa tia tới và pháp tuyến.'],['i′','Góc phản xạ — góc giữa tia phản xạ và pháp tuyến.'],['N','Pháp tuyến — đường vuông góc với gương tại điểm tới.']],
+ refraction:[['i','Góc tới — góc giữa tia tới và pháp tuyến.'],['r','Góc khúc xạ — góc giữa tia khúc xạ và pháp tuyến.'],['n₁','Chiết suất của môi trường 1 (môi trường tia sáng đi đến).'],['n₂','Chiết suất của môi trường 2 (môi trường tia sáng đi vào).'],['N','Pháp tuyến tại điểm tới.']],
+ dispersion:[['n','Chiết suất của môi trường; có thể thay đổi theo màu/bước sóng.'],['c','Tốc độ ánh sáng trong chân không.'],['v','Tốc độ ánh sáng trong môi trường.'],['λ','Bước sóng ánh sáng (mỗi màu có bước sóng khác nhau).']],
+ lens:[['f','Tiêu cự — khoảng cách từ quang tâm đến tiêu điểm.'],['d','Khoảng cách từ vật đến thấu kính.'],['d′','Khoảng cách từ ảnh đến thấu kính (d′ âm với ảnh ảo theo quy ước).'],['k','Độ phóng đại ảnh; k = −d′/d.'],['F, F′','Hai tiêu điểm chính của thấu kính.'],['px','Pixel (điểm ảnh) — đơn vị khoảng cách trên màn hình dùng để hiển thị mô phỏng, không phải cm hay m.']]
+};
+function renderSymbols(m){
+ $('symbols').innerHTML=symbolGlossary[m].map(([symbol,meaning])=>`<div style="padding:9px 10px;background:#0a1728;border:1px solid #203b56;border-radius:9px"><b style="color:var(--cyan);font-size:14px">${symbol}</b><div style="font-size:12px;color:var(--muted);margin-top:3px">${meaning}</div></div>`).join('');
+}
+function setMode(m){mode=m;renderSymbols(m);document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.mode===m));$('title').textContent=meta[m].title;$('description').textContent=meta[m].desc;$('explain').textContent=meta[m].explain;$('formula').textContent=meta[m].formula;$('formulaNote').textContent=meta[m].note;
+ $('legend').innerHTML= m==='reflection'?'<span><i class="dot" style="background:#ffd166"></i>Tia tới</span><span><i class="dot" style="background:#55d9ff"></i>Tia phản xạ</span><span><i class="dot" style="background:#a8bad3"></i>Pháp tuyến</span>':m==='refraction'?'<span><i class="dot" style="background:#ffd166"></i>Tia tới</span><span><i class="dot" style="background:#55d9ff"></i>Tia khúc xạ / phản xạ</span>':m==='dispersion'?'<span><i class="dot" style="background:#fff3cb"></i>Ánh sáng trắng</span><span><i class="dot" style="background:#bd83ff"></i>Quang phổ 7 màu</span>':'<span><i class="dot" style="background:#ffd166"></i>Vật và tia sáng</span><span><i class="dot" style="background:#70e1b2"></i>Ảnh thật</span><span><i class="dot" style="background:#ff7ab6"></i>Ảnh ảo</span>';
+ buildControls();draw()}
+document.querySelectorAll('.nav').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+$('reset').addEventListener('click',()=>{state[mode]=structuredClone(defaults[mode]);buildControls();draw()});
+$('pause').addEventListener('click',()=>{paused=!paused;$('pause').textContent=paused?'▶ Tiếp tục':'Ⅱ Tạm dừng'});
+// Draw on each interaction; animation state is reserved for future wave/particle visualization.
+setMode('reflection');
+</script>
+</body>
+</html>
